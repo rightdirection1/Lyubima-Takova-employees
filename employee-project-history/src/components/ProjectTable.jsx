@@ -28,7 +28,7 @@ function ProjectTable({ data }) {
             <Tr key={index}>
               <Td>{row.firstEmployeeId}</Td>
               <Td>{row.secondEmployeeId}</Td>
-              <Td>{row.Project}</Td>
+              <Td>{row.ProjectID}</Td>
               <Td>{row.LongestPeroidOfTime}</Td>
             </Tr>
           ))}

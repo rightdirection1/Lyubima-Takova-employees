@@ -8,7 +8,8 @@ export function buildEmployeeProjects(csvData) {
   csvData.forEach((row) => {
     const employeeId = row["EmployeeID"];
     const projectID = row["ProjectID"];
-    const dateFrom = parseDate(row["DateFrom"], dateFormatOptions) || new Date(0);
+    const dateFrom =
+      parseDate(row["DateFrom"], dateFormatOptions) || new Date(0);
     const dateTo = parseDate(row["DateTo"], dateFormatOptions) || new Date();
 
     if (!employeeProjects.has(employeeId)) {
@@ -25,17 +26,17 @@ export function findLongestWorkingPair(employeeProjects) {
   let maxDaysWorked = 0;
   let bestPair = {};
 
-  for (const [employeeId1, projects1] of employeeProjects) {
-    for (const [employeeId2, projects2] of employeeProjects) {
-      if (employeeId1 !== employeeId2) {
-        for (const project1 of projects1) {
-          for (const project2 of projects2) {
-            if (project1.projectID === project2.projectID) {
+  for (const [firstEmployeeId, firstEmployeeProjects] of employeeProjects) {
+    for (const [secondEmployeeId, secondEmployeeProjects] of employeeProjects) {
+      if (firstEmployeeId !== secondEmployeeId) {
+        for (const firstProject of firstEmployeeProjects) {
+          for (const secondProject of secondEmployeeProjects) {
+            if (firstProject.projectID === secondProject.projectID) {
               const overlapStart = new Date(
-                Math.max(project1.dateFrom, project2.dateFrom)
+                Math.max(firstProject.dateFrom, secondProject.dateFrom)
               );
               const overlapEnd = new Date(
-                Math.min(project1.dateTo, project2.dateTo)
+                Math.min(firstProject.dateTo, secondProject.dateTo)
               );
 
               if (overlapStart <= overlapEnd) {
@@ -43,9 +44,9 @@ export function findLongestWorkingPair(employeeProjects) {
                 if (overlap > maxDaysWorked) {
                   maxDaysWorked = overlap;
                   bestPair = {
-                    firstEmployeeId: employeeId1,
-                    secondEmployeeId: employeeId2,
-                    Project: project1.projectID,
+                    firstEmployeeId: firstEmployeeId,
+                    secondEmployeeId: secondEmployeeId,
+                    ProjectID: firstProject.projectID,
                     LongestPeroidOfTime: maxDaysWorked,
                   };
                 }
